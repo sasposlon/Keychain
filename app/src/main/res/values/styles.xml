@@ -10,7 +10,12 @@
     </style>
 
     <style name="AppThemeNoAction" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorControlActivated">@android:color/holo_orange_dark</item>
+        <item name="colorControlActivated">@android:color/holo_orange_light</item>
+    </style>
+
+    <style name="ToolbarItemsColored" parent="AppTheme">
+        <item name="android:textColorSecondary">@android:color/holo_orange_light</item>
+        <item name="android:textColorPrimary">#D3D3D3</item>
     </style>
 
 </resources>
