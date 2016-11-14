@@ -1,0 +1,9 @@
+Success
+10 -> Querry executed
+
+
+Error
+20 -> 
+21 -> Wrong email format
+22 -> User already exists
+23 -> Variables missing
