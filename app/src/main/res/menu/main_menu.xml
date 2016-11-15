@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/NewLock_id"
+        android:title="New Lock"
+
+
+        />
+
+    <item
+        android:id="@+id/Unlock_id"
+        android:title="Unlock"
+
+
+        />
+
+    <item
+        android:id="@+id/Lock_id"
+        android:title="Lock"
+
+
+        />
+    <item
+        android:id="@+id/All_Locks_id"
+        android:title="All Locks"
+
+
+        />
+</menu>
