@@ -23,9 +23,10 @@ if (filter_has_var(INPUT_POST, 'service')) {
 } else {
     $statusCode = 200;
     $rest = new RESTClass();
-    $rawData = array('Code' => 20,
-        'Type' => 'Error',
-        'Message' => 'Service variable missing');
+    $rawData = array('code' => 20,
+        'type' => 'Error',
+        'message' => 'Service variable missing',
+        'items' => '');
     $rest->response($statusCode, $rawData);
  }
 ?>

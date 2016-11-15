@@ -13,9 +13,10 @@ class RegistrationRESTHandler extends RESTClass {
             $password = filter_input(INPUT_POST, 'password');
 
             if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                $rawData = array('Code' => 21,
-                    'Type' => 'Error',
-                    'Message' => 'Wrong email format!');
+                $rawData = array('code' => 21,
+                    'type' => 'Error',
+                    'message' => 'Wrong email format!',
+                    'items' => '');
             } else {
                 $db->query("Select * from user where mail = :mail");
                 $db->bind('mail', $mail);
@@ -26,23 +27,36 @@ class RegistrationRESTHandler extends RESTClass {
                     $db->bind(':mail', $mail);
                     $db->bind(':password', $password);
                     $db->execute();
-                    $db->disconnect();
                     $statusCode = 200;
-                    $rawData = array('Code' => 10,
-                        'Type' => 'Success',
-                        'Message' => 'Querry executed!');
+                    $rawData = array('code' => 10,
+                        'type' => 'Success',
+                        'message' => 'Querry executed!',
+                        'items' => '');
                 } else {
-                    $db->disconnect();
-                    $rawData = array('Code' => 22,
-                        'Type' => 'Error',
-                        'Message' => 'User already exists!');
+                    $db->query("Select * from user where mail = :mail and password = :password");
+                    $db->bind('mail', $mail);
+                    $db->bind('password', $password);
+                    $row = $db->single();
+                    if (!empty($row)) {
+                        $rawData = array('code' => 11,
+                            'type' => 'Success',
+                            'message' => 'Mail and password OK!',
+                            'items' => '');
+                    } else {
+                        $rawData = array('code' => 22,
+                            'type' => 'Error',
+                            'message' => 'Wrong password!',
+                            'items' => '');
+                    }
                 }
             }
         } else {
-            $rawData = array('Code' => 23,
-                'Type' => 'Error',
-                'Message' => 'Variables missing!');
+            $rawData = array('code' => 23,
+                'type' => 'Error',
+                'message' => 'Variables missing!',
+                'items' => '');
         }
+        $db->disconnect();
         $this->response($statusCode, $rawData);
     }
 

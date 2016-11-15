@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
+import hr.keychain.webservice.WebServiceCaller;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener( new View.OnClickListener(){
                                          @Override
                                          public void onClick(View v){
+                                             WebServiceCaller webServiceCaller = new WebServiceCaller();
+                                             webServiceCaller.registration("registration", etEmail.getText().toString(), etPassword.getText().toString());
                                              if(etEmail.getText().toString().equals("admin") && etPassword.getText().toString().equals("admin")  ) {
                                                  Toast.makeText(MainActivity.this,"Email and Password is correct",Toast.LENGTH_SHORT).show();
 

@@ -1,9 +1,9 @@
 Success
 10 -> Querry executed
-
+11 -> Mail and password OK
 
 Error
-20 -> 
+20 -> Service variable missing
 21 -> Wrong email format
-22 -> User already exists
+22 -> Wrong password
 23 -> Variables missing
