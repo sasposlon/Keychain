@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                                                  //otvaranje nove aktivnosti
                                                  Intent myIntent = new Intent(MainActivity.this, IzbornikActivity.class);
                                                  startActivity(myIntent);
+                                                 finish();
 
                                              } else {
                                                  Toast.makeText(MainActivity.this,"Email and Password is not correct",Toast.LENGTH_SHORT).show();

@@ -4,7 +4,13 @@ package hr.keychain.keychain;
  * Created by Ines on 12.11.2016..
  */
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +22,10 @@ import android.widget.Toast;
 
 public class IzbornikActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle actionBarDrawerToggle;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationDrawer;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +33,65 @@ public class IzbornikActivity extends AppCompatActivity {
         setTitle("MENI");
         setContentView(R.layout.activity_izbornik);
 
+        //Toolbar to replace ActionBar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.drawer_open,
-                R.string.drawer_close);
+        actionBarDrawerToggle = setupDrawerToggle();
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+    }
 
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+    private ActionBarDrawerToggle setupDrawerToggle(){
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+    }
+
+    private void setupDrawerContent(NavigationView navigationDrawer) {
+        navigationDrawer.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener(){
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem){
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                }        );
+    }
+
+    private void selectDrawerItem(MenuItem menuItem) {
+        Fragment fragment = null;
+        Class fragmentClass;
+        switch (menuItem.getItemId()){
+            case R.id.nav_first_fragment:
+                fragmentClass = SyncActivity.class;
+                break;
+            case R.id.nav_second_fragment:
+                fragmentClass = LogOutActivity.class;
+                break;
+            default:
+                fragmentClass = SyncActivity.class;
+        }
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        menuItem.setChecked(true);
+        drawerLayout.closeDrawers();
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -53,8 +104,8 @@ public class IzbornikActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+
+        switch (item.getItemId()) {
             case R.id.All_Locks_id:
                 Toast.makeText(getApplicationContext(), "All locks optionselected", Toast.LENGTH_LONG).show();
                 return true;
@@ -69,8 +120,7 @@ public class IzbornikActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
-
     }
+
 }
