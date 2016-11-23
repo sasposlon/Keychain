@@ -7,37 +7,21 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IzbornikActivity">
-
-    <!-- LinearLayout predstavlja sadržaj ekrana-->
+    tools:context=".IzbornikActivity"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
-        <!-- ActionBar-->
+
         <include
             layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Ovdje se učitavaju fragmenti-->
-        <FrameLayout
-            android:id="@+id/flContent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
-
     </LinearLayout>
 
-    <!-- The navigation drawer that comes from the left -->
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nvView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/drawer_view"
-        app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@android:color/black"/>
 
 </android.support.v4.widget.DrawerLayout>
