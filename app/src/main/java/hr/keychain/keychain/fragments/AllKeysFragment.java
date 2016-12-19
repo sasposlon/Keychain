@@ -13,13 +13,13 @@ import hr.keychain.keychain.R;
  * Created by Saša Poslončec on 19.12.16..
  */
 
-public class AddKeyFragment extends Fragment {
+public class AllKeysFragment extends Fragment {
 
-    public AddKeyFragment () {}
+    public AllKeysFragment () {}
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_key, container, false);
+        return inflater.inflate(R.layout.fragment_all_keys, container, false);
     }
 }
