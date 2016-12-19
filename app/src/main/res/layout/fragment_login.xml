@@ -11,7 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/background"
-    tools:context="hr.keychain.keychain.MainActivity"
+    tools:context="hr.keychain.keychain.LoginRegistration"
 
     >
 
@@ -63,5 +63,15 @@
         android:layout_marginTop="42dp"
         android:layout_alignEnd="@+id/lozinka"
         android:textColor="@android:color/black" />
+
+    <Button
+        android:text="Create account"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:id="@+id/btnCreateAcc"
+        android:background="@drawable/buttton_shadow" />
 
 </RelativeLayout>
