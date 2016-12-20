@@ -62,9 +62,9 @@ public class IzbornikActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Lock option selected", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.NewLock_id:
-                Intent myIntent = new Intent(IzbornikActivity.this, NewLockActivity.class);
+                /*Intent myIntent = new Intent(IzbornikActivity.this, NewLockActivity.class);
                 startActivity(myIntent);
-                finish();
+                finish();*/
                 return true;
             case R.id.Unlock_id:
                 Toast.makeText(getApplicationContext(), "Unlock option selected", Toast.LENGTH_SHORT).show();
