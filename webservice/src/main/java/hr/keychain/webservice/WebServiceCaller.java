@@ -26,18 +26,18 @@ public class WebServiceCaller {
                 .client(client)
                 .build();
     }
-
-    public void registration (final String service, String mail, String password){
+    /*
+    public String registration (final String service, String mail, String password){
         WebService serviceCaller = retrofit.create(WebService.class);
         Call<WebServiceResponse> call = serviceCaller.registration(service, mail, password);
         if(call != null){
             call.enqueue(new Callback<WebServiceResponse>() {
                 @Override
-                public void onResponse(Response<WebServiceResponse> response, Retrofit retrofit) {
+                public void onResponse(Response<WebServiceResponse> returnedResponse, Retrofit retrofit) {
                     try{
-                        if(response.isSuccess()){
+                        if(returnedResponse.isSuccess()){
                             if(service == "registration"){
-                                System.out.println("Login OK");
+                                System.out.println(returnedResponse.body().getCode());
                             }
                             else{
                                 System.out.println("Unknown operation");
@@ -54,7 +54,8 @@ public class WebServiceCaller {
                 }
             });
         }
-    }
+        return status;
+    }*/
 
 
 }
