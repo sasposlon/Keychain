@@ -5,5 +5,7 @@ Success
 Error
 20 -> Service variable missing
 21 -> Wrong email format
-22 -> Wrong password
+22 -> Wrong email or password
 23 -> Variables missing
+24 -> E-mail does not exist
+25 -> E-mail already exists

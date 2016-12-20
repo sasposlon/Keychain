@@ -1,6 +1,9 @@
 <?php
 
 require_once("Handlers/RegistrationRESTHandler.php");
+require_once("Handlers/LoginRESTHandler.php");
+require_once("Handlers/AllKeysHandler.php");
+
 $view = "";
 if (filter_has_var(INPUT_POST, 'service')) {
     $service = filter_input(INPUT_POST, 'service');
@@ -15,6 +18,16 @@ if (filter_has_var(INPUT_POST, 'service')) {
             $registration = new RegistrationRESTHandler();
             $registration->work();
             break;
+        
+        case "login":
+            $login = new LoginRESTHandler();
+            $login->work();
+            break;
+
+        case "allLocks":
+            $lock = new AllKeysHandler();
+            $lock->work();
+            break;
 
         case "" :
             //404 - not found;
@@ -23,10 +36,7 @@ if (filter_has_var(INPUT_POST, 'service')) {
 } else {
     $statusCode = 200;
     $rest = new RESTClass();
-    $rawData = array('code' => 20,
-        'type' => 'Error',
-        'message' => 'Service variable missing',
-        'items' => '');
+    $rawData = $rest->getResponseMessage(20);
     $rest->response($statusCode, $rawData);
- }
+}
 ?>
