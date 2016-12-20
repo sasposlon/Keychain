@@ -107,7 +107,7 @@ public class IzbornikActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.All_Locks_id:
-                Toast.makeText(getApplicationContext(), "All locks optionselected", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "All locks option selected", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.Lock_id:
                 Toast.makeText(getApplicationContext(), "Lock option selected", Toast.LENGTH_LONG).show();

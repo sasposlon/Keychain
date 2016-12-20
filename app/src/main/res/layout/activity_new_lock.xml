@@ -31,9 +31,9 @@
             android:ems="10"
             android:id="@+id/name" />
 
- </LinearLayout>
+    </LinearLayout>
 
- <LinearLayout
+    <LinearLayout
      android:layout_width="match_parent"
      android:layout_height="73dp"
      android:orientation="horizontal"
@@ -66,7 +66,7 @@
          android:text="NFC CODE"
          android:layout_width="wrap_content"
          android:layout_height="35dp"
-         android:id="@+id/textView4"
+         android:id="@+id/nfccode"
          android:layout_weight="1"
          android:textAlignment="center"
          android:background="@drawable/textview_design"

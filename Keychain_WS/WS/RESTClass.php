@@ -62,6 +62,44 @@ class RESTClass {
         return ($httpStatus[$statusCode]) ? $httpStatus[$statusCode] : $statusCode[500];
     }
 
+    public function getResponseMessage($code, $result = null) {
+        $data = array(
+            10 => array('code' => 10,
+                'type' => 'Success',
+                'message' => 'Querry executed!',
+                'items' => $result),
+            11 => array('code' => 11,
+                'type' => 'Success',
+                'message' => 'Mail and password OK!',
+                'items' => $result),
+            20 => array('code' => 20,
+                'type' => 'Error',
+                'message' => 'Service variable missing',
+                'items' => $result),
+            21 => array('code' => 21,
+                'type' => 'Error',
+                'message' => 'Wrong email format!',
+                'items' => $result),
+            22 => array('code' => 22,
+                'type' => 'Error',
+                'message' => 'Wrong e-mail or password!',
+                'items' => $result),
+            23 => array('code' => 23,
+                'type' => 'Error',
+                'message' => 'Variables missing!',
+                'items' => $result),
+            24 => array('code' => 24,
+                'type' => 'Error',
+                'message' => 'E-mail does not exist!',
+                'items' => $result),
+            25 => array('code' => 25,
+                'type' => 'Error',
+                'message' => 'E-mail already exists!',
+                'items' => $result)
+        );
+        return $data[$code];
+    }
+
     public function response($statusCode, $rawData) {
         $requestContentType = filter_input(INPUT_SERVER, 'HTTP_ACCEPT');
         $this->setHttpHeaders($requestContentType, $statusCode);
