@@ -15,7 +15,7 @@ import retrofit.Retrofit;
 
 public class WebServiceCaller {
     Retrofit retrofit;
-    private final String baseUrl = "http://10.0.3.2/Keychain_WS/WS/";
+    private final String baseUrl = "http://arka.foi.hr/WebDiP/2014_projekti/WebDiP2014x054/WS/";
 
     public WebServiceCaller() {
         OkHttpClient client = new OkHttpClient();
