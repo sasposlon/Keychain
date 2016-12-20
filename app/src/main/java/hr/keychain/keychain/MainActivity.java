@@ -1,55 +1,61 @@
 package hr.keychain.keychain;
 
-import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.MenuItem;
 
-import com.raizlabs.android.dbflow.config.FlowConfig;
-import com.raizlabs.android.dbflow.config.FlowManager;
-
-import hr.keychain.webservice.WebServiceCaller;
+import hr.keychain.keychain.fragments.AddKeyFragment;
+import hr.keychain.keychain.fragments.AllKeysFragment;
+import hr.keychain.keychain.fragments.LockFragment;
+import hr.keychain.keychain.fragments.UnlockFragment;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    Button btnLogin;
-    EditText etEmail, etPassword;
+    private Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FlowManager.init(new FlowConfig.Builder(this).build());
-        login();
-    }
-    public void login() {
-        etEmail = (EditText) findViewById(R.id.email);
-        etPassword = (EditText) findViewById(R.id.lozinka);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        UnlockFragment unlockFragment = new UnlockFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.main_container, unlockFragment).commit();
 
-        btnLogin.setOnClickListener( new View.OnClickListener(){
-                                         @Override
-                                         public void onClick(View v){
-                                             WebServiceCaller webServiceCaller = new WebServiceCaller();
-                                             webServiceCaller.registration("registration", etEmail.getText().toString(), etPassword.getText().toString());
-                                             if(etEmail.getText().toString().equals("admin") && etPassword.getText().toString().equals("admin")  ) {
-                                                 Toast.makeText(MainActivity.this,"Email and Password is correct",Toast.LENGTH_SHORT).show();
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
-                                                 //otvaranje nove aktivnosti
-                                                 Intent myIntent = new Intent(MainActivity.this, IzbornikActivity.class);
-                                                 startActivity(myIntent);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()){
+                            case (R.id.menu_add):
+                                fragment = new AddKeyFragment();
+                                break;
 
-                                             } else {
-                                                 Toast.makeText(MainActivity.this,"Email and Password is not correct",Toast.LENGTH_SHORT).show();
-                                             }
-                                         }
-                                     }
+                            case (R.id.menu_unlock):
+                                fragment = new UnlockFragment();
+                                break;
+
+                            case (R.id.menu_lock):
+                                fragment = new LockFragment();
+                                break;
+
+                            case (R.id.menu_all_keys):
+                                fragment = new AllKeysFragment();
+                                break;
+                        }
+                        final FragmentManager fragmentManager = getSupportFragmentManager();
+                        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, fragment);
+                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        fragmentTransaction.commit();
+                        return true;
+                    }
+                }
         );
     }
 
