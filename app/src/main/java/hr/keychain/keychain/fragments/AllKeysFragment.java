@@ -1,4 +1,4 @@
-package hr.keychain.keychain;
+package hr.keychain.keychain.fragments;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -20,6 +20,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import hr.keychain.keychain.IzbornikActivity;
+import hr.keychain.keychain.R;
+
 
 public class AllKeysFragment extends Fragment {
     public AllKeysFragment(){}
@@ -29,7 +32,7 @@ public class AllKeysFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_allkeys, container, false);
+        View view = inflater.inflate(R.layout.fragment_all_keys, container, false);
 
 
         ListView listview = (ListView) view.findViewById(R.id.listaKljuceva);

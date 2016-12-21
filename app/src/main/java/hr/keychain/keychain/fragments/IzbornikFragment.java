@@ -1,7 +1,6 @@
-package hr.keychain.keychain;
+package hr.keychain.keychain.fragments;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import hr.keychain.keychain.IzbornikActivity;
+import hr.keychain.keychain.R;
+import hr.keychain.keychain.fragments.AllKeysFragment;
+
 public class IzbornikFragment extends Fragment {
 
 
@@ -20,7 +23,7 @@ public class IzbornikFragment extends Fragment {
         // Required empty public constructor
     }
 
-    String[] keys = {"New Lock", "Lock / Unlock", "All Locks"};
+    String[] keys = {"Add New Key", "Lock / Unlock", "All Keys"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class IzbornikFragment extends Fragment {
                 Fragment fragment = null;
                 switch (position) {
                     case 0:
-                        Toast.makeText(getActivity(), "Nije realizirana ova funkcionalnost", Toast.LENGTH_SHORT).show();
+                        fragment = new AddKeyFragment();
                         break;
                     case 1:
                         Toast.makeText(getActivity(), "Nije realizirana ova funkcionalnost", Toast.LENGTH_SHORT).show();
