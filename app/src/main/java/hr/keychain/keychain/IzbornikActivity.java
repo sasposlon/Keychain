@@ -26,18 +26,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import hr.keychain.keychain.adapteri.IzbornikAdapter;
-import hr.keychain.keychain.klase.Izbornik;
-
 public class IzbornikActivity extends AppCompatActivity{
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private List<Izbornik> izbornikList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private IzbornikAdapter mAdapter;
 
     PlayersFragment fragment;
 
@@ -54,17 +48,13 @@ public class IzbornikActivity extends AppCompatActivity{
         actionBarDrawerToggle = setupDrawerToggle();
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-        mAdapter = new IzbornikAdapter(izbornikList);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(mAdapter);
-
-        prepareIzbornik();
-
-
+        //Odmah kod kreiranja aktivnosti Izbornik poziva se fragment izbornik
+        //koji se učitava u fragment_container
+        IzbornikFragment fragmentIzbornik = new IzbornikFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, fragmentIzbornik)
+                .commit();
     }
 
     @Override
@@ -90,25 +80,11 @@ public class IzbornikActivity extends AppCompatActivity{
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private void prepareIzbornik(){
-        Izbornik i = new Izbornik("New Lock", R.drawable.dl_logout);
-        izbornikList.add(i);
-        i = new Izbornik("All Locks", R.drawable.dl_sync);
-        izbornikList.add(i);
-
-
-        mAdapter.notifyDataSetChanged();
-
-    }
-
-
-
     public void clickHandler(View view) {
 
         fragment = new PlayersFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, fragment)
-                .commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment).commit();
     }
 }

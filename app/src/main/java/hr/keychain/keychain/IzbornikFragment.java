@@ -1,0 +1,65 @@
+package hr.keychain.keychain;
+
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+public class IzbornikFragment extends Fragment {
+
+
+    public IzbornikFragment() {
+        // Required empty public constructor
+    }
+
+    String[] keys = {"New Lock", "Lock / Unlock", "All Locks"};
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_izbornik, container, false);
+
+
+        ListView listview = (ListView) view.findViewById(R.id.listaIzbornik);
+
+        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
+                getActivity(), android.R.layout.simple_list_item_1, keys);
+        listview.setAdapter(listViewAdapter);
+
+        //clickListener
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Fragment fragment = null;
+                switch (position) {
+                    case 0:
+                        Toast.makeText(getActivity(), "Nije realizirana ova funkcionalnost", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        Toast.makeText(getActivity(), "Nije realizirana ova funkcionalnost", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        fragment = new PlayersFragment();
+                        break;
+                }
+                if(fragment != null){
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, fragment).commit();
+                }
+
+            }
+        });
+
+        return view;
+    }
+
+}

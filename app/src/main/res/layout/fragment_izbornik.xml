@@ -6,18 +6,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context = ".IzbornikActivity"
-    tools:showIn="@layout/activity_izbornik"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
+    <ListView
+        android:id="@+id/listaIzbornik"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="?attr/actionBarSize"
+        android:paddingTop="70dp"
         >
-    </android.support.v7.widget.RecyclerView>
+
+    </ListView>
 
     <Button
         android:layout_width="wrap_content"

@@ -22,10 +22,6 @@
             android:theme="@style/AppThemeNoAction">
         </activity>
 
-        <activity android:name=".NewLockActivity"
-            android:theme="@style/AppThemeNoAction">
-        </activity>
-
     </application>
 
 </manifest>
