@@ -32,13 +32,9 @@ public class IzbornikActivity extends AppCompatActivity{
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
-
-    PlayersFragment fragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("MENI");
         setContentView(R.layout.activity_izbornik);
 
         //Postavljanje toolbara i drawer layout-a
@@ -80,11 +76,14 @@ public class IzbornikActivity extends AppCompatActivity{
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public void clickHandler(View view) {
+    @Override
+    public void onBackPressed() {
+        getSupportFragmentManager()
+                .popBackStack();
+    }
 
-        fragment = new PlayersFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment).commit();
+    public void setActionBarTitle(String title){
+        getSupportActionBar()
+                .setTitle(title);
     }
 }

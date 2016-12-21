@@ -34,6 +34,8 @@ public class IzbornikFragment extends Fragment {
                 getActivity(), android.R.layout.simple_list_item_1, keys);
         listview.setAdapter(listViewAdapter);
 
+        ((IzbornikActivity) getActivity()).setActionBarTitle("MENI");
+
         //clickListener
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -47,13 +49,15 @@ public class IzbornikFragment extends Fragment {
                         Toast.makeText(getActivity(), "Nije realizirana ova funkcionalnost", Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
-                        fragment = new PlayersFragment();
+                        fragment = new AllKeysFragment();
                         break;
                 }
                 if(fragment != null){
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, fragment).commit();
+                            .replace(R.id.fragment_container, fragment)
+                            .addToBackStack(null)
+                            .commit();
                 }
 
             }
