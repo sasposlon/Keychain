@@ -46,7 +46,6 @@ public class IzbornikActivity extends AppCompatActivity{
         if(actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -64,12 +63,14 @@ public class IzbornikActivity extends AppCompatActivity{
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    //postavljanje tipka za vracanje kod fragmenata
     @Override
     public void onBackPressed() {
         getSupportFragmentManager()
                 .popBackStack();
     }
 
+    //metoda koja se poziva kod postavljanja naslova ActioBara
     public void setActionBarTitle(String title){
         getSupportActionBar()
                 .setTitle(title);

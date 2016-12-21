@@ -27,22 +27,21 @@ public class IzbornikFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_izbornik, container, false);
 
 
-        ListView listview = (ListView) view.findViewById(R.id.listaIzbornik);
-
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
+        ListView listview = (ListView) view.findViewById(R.id.listaIzbornik);          //gdje ce se sadrzaj prikazati
+        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(               //adapter
                 getActivity(), android.R.layout.simple_list_item_1, keys);
-        listview.setAdapter(listViewAdapter);
+        listview.setAdapter(listViewAdapter);                                          //prikaz sadrzaja
 
+        //postavljanje naslova na ActionBar
         ((IzbornikActivity) getActivity()).setActionBarTitle("MENI");
 
         //clickListener
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {   //clickListener
                 Fragment fragment = null;
                 switch (position) {
                     case 0:

@@ -31,16 +31,15 @@ public class AllKeysFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_all_keys, container, false);
 
 
-        ListView listview = (ListView) view.findViewById(R.id.listaKljuceva);
-
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
+        ListView listview = (ListView) view.findViewById(R.id.listaKljuceva); //gdje prikazujemo sadrzaj(listView u layoutu)
+        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(      //adapter(aktivnost, layout za svaki red(template od androida), podaci)
                 getActivity(), android.R.layout.simple_list_item_1, keys);
-        listview.setAdapter(listViewAdapter);
+        listview.setAdapter(listViewAdapter);                                //postavljanje adaptera, prikaz sadrzaja
 
+        //postavljanje naslova na ActionBar
         ((IzbornikActivity) getActivity()).setActionBarTitle("ALL LOCKS");
 
         return view;

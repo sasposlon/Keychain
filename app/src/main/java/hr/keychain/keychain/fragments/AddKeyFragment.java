@@ -18,9 +18,9 @@ public class AddKeyFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_add_key, container, false);
 
+        //postavljanje naslova na ActionBar
         ((IzbornikActivity) getActivity()).setActionBarTitle("ADD KEY");
         return view;
     }
