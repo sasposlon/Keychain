@@ -64,14 +64,18 @@
         android:layout_alignEnd="@+id/lozinka"
         android:textColor="@android:color/black" />
 
-    <Button
+    <TextView
+        android:id="@+id/btnCreateAcc"
         android:text="Create account"
+        android:textColor="@color/colorOrangeLight"
+        android:textSize="18sp"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        android:id="@+id/btnCreateAcc"
-        android:background="@drawable/buttton_shadow" />
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-medium"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/btnLogin"
+        android:layout_alignStart="@+id/btnLogin"
+        android:layout_alignEnd="@+id/btnLogin" />
 
 </RelativeLayout>

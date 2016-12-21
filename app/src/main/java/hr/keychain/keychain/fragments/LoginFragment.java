@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import hr.keychain.keychain.R;
 
@@ -19,7 +20,7 @@ import hr.keychain.keychain.R;
 public class LoginFragment extends Fragment implements View.OnClickListener{
     View view;
     Button btnLogin;
-    Button btnCreateAcc;
+    TextView btnCreateAcc;
 
     public LoginFragment () {}
 
@@ -29,7 +30,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         view = inflater.inflate(R.layout.fragment_login, container, false);
         btnLogin = (Button) view.findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
-        btnCreateAcc = (Button) view.findViewById(R.id.btnCreateAcc);
+        btnCreateAcc = (TextView) view.findViewById(R.id.btnCreateAcc);
         btnCreateAcc.setOnClickListener(this);
         return view;
     }
