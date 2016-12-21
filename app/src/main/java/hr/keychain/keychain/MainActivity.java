@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                                          public void onClick(View v){
                                              WebServiceCaller webServiceCaller = new WebServiceCaller();
                                              webServiceCaller.registration("registration", etEmail.getText().toString(), etPassword.getText().toString());
-                                             if(etEmail.getText().toString().equals("admin") && etPassword.getText().toString().equals("admin")  ) {
+                                             if(etEmail.getText().toString().equals("") && etPassword.getText().toString().equals("")  ) {
                                                  Toast.makeText(MainActivity.this,"Email and Password is correct",Toast.LENGTH_SHORT).show();
 
                                                  //otvaranje nove aktivnosti

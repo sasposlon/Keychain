@@ -11,14 +11,18 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:id="@+id/drawer_layout">
 
+
     <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/content_izbornik" />
         <include layout="@layout/toolbar"/>
+        <include layout="@layout/content_izbornik" />
+
 
     </FrameLayout>
+
 
     <!-- The navigation drawer that comes from the left -->
     <android.support.design.widget.NavigationView

@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class IzbornikActivity extends AppCompatActivity{
     private List<Izbornik> izbornikList = new ArrayList<>();
     private RecyclerView recyclerView;
     private IzbornikAdapter mAdapter;
+
+    PlayersFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,17 @@ public class IzbornikActivity extends AppCompatActivity{
         recyclerView.setAdapter(mAdapter);
 
         prepareIzbornik();
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -85,5 +99,16 @@ public class IzbornikActivity extends AppCompatActivity{
 
         mAdapter.notifyDataSetChanged();
 
+    }
+
+
+
+    public void clickHandler(View view) {
+
+        fragment = new PlayersFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, fragment)
+                .commit();
     }
 }
