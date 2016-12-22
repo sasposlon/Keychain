@@ -1,5 +1,6 @@
 package hr.keychain.keychain.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.R;
 
 /**
@@ -50,6 +52,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private void login(){
 
+        //otvaranje nove aktivnosti
+        Intent myIntent = new Intent(getActivity(), IzbornikActivity.class);
+        startActivity(myIntent);
     }
 
     private void createAccount () {
