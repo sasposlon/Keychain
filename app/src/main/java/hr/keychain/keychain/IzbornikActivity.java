@@ -4,75 +4,75 @@ package hr.keychain.keychain;
  * Created by Ines on 12.11.2016..
  */
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-public class IzbornikActivity extends AppCompatActivity {
+import hr.keychain.keychain.fragments.IzbornikFragment;
 
-    Toolbar toolbar;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle actionBarDrawerToggle;
+public class IzbornikActivity extends AppCompatActivity{
+
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("MENI");
         setContentView(R.layout.activity_izbornik);
 
+        //Postavljanje toolbara i drawer layout-a
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.drawer_open,
-                R.string.drawer_close);
+        actionBarDrawerToggle = setupDrawerToggle();
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        //Odmah kod kreiranja aktivnosti Izbornik poziva se fragment izbornik
+        //koji se učitava u fragment_container
+        IzbornikFragment fragmentIzbornik = new IzbornikFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, fragmentIzbornik)
+                .commit();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
     }
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    //postavljanje tipka za vracanje kod fragmenata
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.All_Locks_id:
-                Toast.makeText(getApplicationContext(), "All locks option selected", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.Lock_id:
-                Toast.makeText(getApplicationContext(), "Lock option selected", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.NewLock_id:
-                /*Intent myIntent = new Intent(IzbornikActivity.this, NewLockActivity.class);
-                startActivity(myIntent);
-                finish();*/
-                return true;
-            case R.id.Unlock_id:
-                Toast.makeText(getApplicationContext(), "Unlock option selected", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        getSupportFragmentManager()
+                .popBackStack();
+    }
 
-        }
-
+    //metoda koja se poziva kod postavljanja naslova ActioBara
+    public void setActionBarTitle(String title){
+        getSupportActionBar()
+                .setTitle(title);
     }
 }

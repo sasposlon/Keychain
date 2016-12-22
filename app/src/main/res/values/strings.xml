@@ -3,8 +3,4 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="menu_unlock">Unlock</string>
-    <string name="menu_lock">Lock</string>
-    <string name="menu_add">Add Key</string>
-    <string name="menu_all_keys">All Keys</string>
 </resources>

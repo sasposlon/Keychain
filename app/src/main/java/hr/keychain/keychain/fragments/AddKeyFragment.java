@@ -7,19 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.R;
 
-/**
- * Created by Saša Poslončec on 19.12.16..
- */
 
-public class AddKeyFragment extends Fragment {
+public class AddKeyFragment extends Fragment{
 
-    public AddKeyFragment () {}
+    public AddKeyFragment() {
+    }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_key, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_add_key, container, false);
+
+        //postavljanje naslova na ActionBar
+        ((IzbornikActivity) getActivity()).setActionBarTitle("ADD KEY");
+        return view;
     }
 }
