@@ -4,6 +4,9 @@ require_once("./RESTClass.php");
 require_once('./../Database/Db_class.php');
 
 class RegistrationRESTHandler extends RESTClass {
+    private $result = array('mail' => '',
+        'password' => '',
+        'pin' => '');
 
     function work() {
         $db = new Db();
@@ -13,7 +16,7 @@ class RegistrationRESTHandler extends RESTClass {
             $password = filter_input(INPUT_POST, 'password');
 
             if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                $rawData = $this->getResponseMessage(21);
+                $rawData = $this->getResponseMessage(21, $this->result);
             } else {
                 $db->query("Select * from user where mail = :mail");
                 $db->bind('mail', $mail);
@@ -24,13 +27,17 @@ class RegistrationRESTHandler extends RESTClass {
                     $db->bind(':mail', $mail);
                     $db->bind(':password', $password);
                     $db->execute();
-                    $rawData = $this->getResponseMessage(10);
+                    
+                    $db->query("Select * from user where mail = :mail");
+                    $db->bind(':mail', $mail);
+                    $data = $db->single();
+                    $rawData = $this->getResponseMessage(10, $data);
                 } else {
-                    $rawData = $this->getResponseMessage(25);
+                    $rawData = $this->getResponseMessage(25, $this->result);
                 }
             }
         } else {
-            $rawData = $this->getResponseMessage(23);
+            $rawData = $this->getResponseMessage(23, $this->result);
         }
         $db->disconnect();
         $this->response($statusCode, $rawData);

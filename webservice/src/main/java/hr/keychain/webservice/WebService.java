@@ -1,6 +1,6 @@
 package hr.keychain.webservice;
 
-import hr.keychain.webservice.responses.WebServiceResponse;
+import hr.keychain.webservice.responses.RegistrationResponse;
 import retrofit.Call;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
@@ -16,10 +16,11 @@ public interface WebService {
     @FormUrlEncoded
     @Headers("Accept: application/json")
     @POST("RESTController.php")
-    Call<WebServiceResponse> registration(@Field("service") String service, @Field("mail") String mail, @Field("password") String password);
+    Call<RegistrationResponse> registration(@Field("service") String service, @Field("mail") String mail, @Field("password") String password);
 
     @FormUrlEncoded
     @Headers("Accept: application/json")
     @POST("RESTController.php")
-    Call<WebServiceResponse> login(@Field("service") String service, @Field("mail") String mail, @Field("password") String password);
+    Call<RegistrationResponse> login(@Field("service") String service, @Field("mail") String mail, @Field("password") String password);
+
 }

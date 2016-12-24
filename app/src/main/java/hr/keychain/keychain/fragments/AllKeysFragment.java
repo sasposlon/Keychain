@@ -1,27 +1,16 @@
 package hr.keychain.keychain.fragments;
 
-import android.app.Activity;
-import android.app.ListFragment;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import hr.keychain.keychain.IzbornikActivity;
-import hr.keychain.keychain.JSONParser;
 import hr.keychain.keychain.R;
 
 
@@ -31,8 +20,6 @@ public class AllKeysFragment extends Fragment {
     private final String servise = "allLocks";
 
     public AllKeysFragment(){}
-
-    private JSONParser p = new JSONParser();
 
     ArrayList<String> keys = new ArrayList<String>();
 

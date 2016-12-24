@@ -12,10 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.squareup.okhttp.OkHttpClient;
 
+import hr.keychain.database.entities.User;
 import hr.keychain.keychain.R;
 import hr.keychain.webservice.WebService;
+import hr.keychain.webservice.responses.RegistrationResponse;
 import hr.keychain.webservice.responses.WebServiceResponse;
 import retrofit.Call;
 import retrofit.Callback;
@@ -51,10 +55,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnRegister:
-                String mail = editMail.getText().toString();
-                String password = editPassword.getText().toString();
-                if (!mail.isEmpty() && !password.isEmpty()) {
-                    registerProcess(mail, password);
+                if (!editMail.getText().toString().isEmpty() && !editPassword.getText().toString().isEmpty()) {
+                    registerProcess(editMail.getText().toString(), editPassword.getText().toString());
                 }
                 else {
                     Toast toast = Toast.makeText(getContext(), "Fields are empty", Toast.LENGTH_SHORT);
@@ -64,7 +66,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void registerProcess(String email, String password) {
+    private void registerProcess(final String email, final String password) {
         OkHttpClient client = new OkHttpClient();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -74,11 +76,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
                 .build();
 
         WebService serviceCaller = retrofit.create(WebService.class);
-        Call<WebServiceResponse> call = serviceCaller.registration(service, email, password);
+        Call<RegistrationResponse> call = serviceCaller.registration(service, email, password);
         if(call != null){
-            call.enqueue(new Callback<WebServiceResponse>() {
+            call.enqueue(new Callback<RegistrationResponse>() {
                 @Override
-                public void onResponse(Response<WebServiceResponse> returnedResponse, Retrofit retrofit) {
+                public void onResponse(Response<RegistrationResponse> returnedResponse, Retrofit retrofit) {
                     try{
                         if(returnedResponse.isSuccess()){
                             if (returnedResponse.body().getCode() == 10) {
@@ -88,9 +90,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
                                 FragmentManager fragmentManager = getFragmentManager();
                                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.login_registration_container, loginFragment);
+
+                                FlowManager.init(new FlowConfig.Builder(getContext()).build()); //Initialize DB
+                                writeDb(returnedResponse.body().getItems().getMail(), returnedResponse.body().getItems().getPassword()); //Write data to local DB
+
+
+                                fragmentManager.popBackStack();
                                 fragmentTransaction.commit();
                             } else {
-                                Toast toast = Toast.makeText(getContext(), returnedResponse.body().getMessage().toString(), Toast.LENGTH_SHORT);
+                                Toast toast = Toast.makeText(getContext(), returnedResponse.body().getMessage(), Toast.LENGTH_SHORT);
                                 toast.show();
                             }
                         }
@@ -105,5 +113,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
                 }
             });
         }
+    }
+
+    //Method for writin a new user to local DB
+    public void writeDb (String mail, String password) {
+        User user = new User();
+        user.setMail(mail);
+        user.setPassword(password);
+        user.save();
     }
 }
