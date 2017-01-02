@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -39,8 +40,7 @@ public class AllKeysFragment extends Fragment {
     private JSONParser p = new JSONParser();
 
     ArrayList<String> keys = new ArrayList<String>();
-
-
+    ArrayAdapter<String> listViewAdapter = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class AllKeysFragment extends Fragment {
             keys.add(k);
         }
         ListView listview = (ListView) view.findViewById(R.id.listaKljuceva); //gdje prikazujemo sadrzaj(listView u layoutu)
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(      //adapter(aktivnost, layout za svaki red(template od androida), podaci)
+        listViewAdapter = new ArrayAdapter<String>(      //adapter(aktivnost, layout za svaki red(template od androida), podaci)
                 getActivity(), android.R.layout.simple_list_item_1, keys);
         listview.setAdapter(listViewAdapter);
         registerForContextMenu(listview);//postavljanje adaptera, prikaz sadrzaja
@@ -71,17 +71,43 @@ public class AllKeysFragment extends Fragment {
             for (int i = 0; i<menuItems.length; i++){
                 menu.add(Menu.NONE, i, i, menuItems[i]);
             }
-
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int selectedIndex = info.position;
+        String selectedItem =keys.get(selectedIndex);
+
         int menuItemIndex = item.getItemId();
         String[] menuItems = getResources().getStringArray(R.array.context_menu_items);
         String menuItemName = menuItems[menuItemIndex];
-        Toast.makeText(getActivity(), "Odabrali ste " + menuItemName, Toast.LENGTH_SHORT).show();
+
+        Fragment fragment = null;
+        switch (item.getItemId()){
+            case 0:
+                fragment = new AddKeyFragment();
+                Toast.makeText(getActivity(), "Odabrali ste " + menuItemName, Toast.LENGTH_SHORT).show();
+                break;
+            case 1:
+                keys.remove(selectedItem);
+                listViewAdapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(), selectedItem + " deleted!", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(getActivity(), "Odabrali ste " + menuItemName, Toast.LENGTH_SHORT).show();
+                break;
+
+
+        }
+        if(fragment != null){
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
 
         return true;
     }
