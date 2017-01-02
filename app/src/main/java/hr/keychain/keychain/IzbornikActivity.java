@@ -6,19 +6,28 @@ package hr.keychain.keychain;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import hr.keychain.keychain.fragments.AddKeyFragment;
+import hr.keychain.keychain.fragments.AllKeysFragment;
 import hr.keychain.keychain.fragments.IzbornikFragment;
+import hr.keychain.keychain.fragments.LockFragment;
 
 public class IzbornikActivity extends AppCompatActivity{
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +43,42 @@ public class IzbornikActivity extends AppCompatActivity{
 
         //Odmah kod kreiranja aktivnosti Izbornik poziva se fragment izbornik
         //koji se učitava u fragment_container
-        IzbornikFragment fragmentIzbornik = new IzbornikFragment();
+        fragment = new AllKeysFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, fragmentIzbornik)
+                .add(R.id.fragment_container, fragment)
                 .commit();
+
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()){
+                            case (R.id.menu_add):
+                                fragment = new AddKeyFragment();
+                                break;
+
+                            case (R.id.menu_lock):
+                                fragment = new LockFragment();
+                                break;
+
+                            case (R.id.menu_all_keys):
+                                fragment = new AllKeysFragment();
+                                break;
+                        }
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
+
+                        return true;
+                    }
+                }
+        );
+
     }
 
     @Override

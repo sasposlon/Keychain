@@ -57,7 +57,7 @@ public class AllKeysFragment extends Fragment {
         registerForContextMenu(listview);//postavljanje adaptera, prikaz sadrzaja
 
         //postavljanje naslova na ActionBar
-        ((IzbornikActivity) getActivity()).setActionBarTitle("ALL LOCKS");
+        ((IzbornikActivity) getActivity()).setActionBarTitle("ALL KEYS");
 
         return view;
     }

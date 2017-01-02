@@ -11,6 +11,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:id="@+id/drawer_layout">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <!-- Ovdje se ucitavaju fragmenti-->
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -20,6 +24,17 @@
         <include layout="@layout/toolbar"/>
 
     </FrameLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorOrange"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottom_navigation" />
+</RelativeLayout>
 
 
     <!-- The navigation drawer that comes from the left -->
