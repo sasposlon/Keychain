@@ -14,14 +14,27 @@
         android:layout_width="match_parent"
         android:layout_height="73dp"
         android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        >
 
 
         <TextView
-            android:text="Lock/Unlock"
+            android:text="Lock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/newLockDescription" />
+            android:id="@+id/lock"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:text="Distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/distance"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
