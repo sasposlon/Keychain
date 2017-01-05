@@ -1,10 +1,10 @@
-package hr.keychain.keychain;
+package hr.keychain.keychain.classes;
 
 /**
  * Created by Ines on 5.1.2017..
  */
 
-public class Key {
+public class Coordinates {
 
     private String title;
     private Double latitude;

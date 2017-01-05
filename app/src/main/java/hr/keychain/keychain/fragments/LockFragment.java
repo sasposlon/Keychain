@@ -16,13 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.JSONParser;
-import hr.keychain.keychain.Key;
+import hr.keychain.keychain.classes.Coordinates;
 import hr.keychain.keychain.R;
 
 /**
@@ -38,7 +37,7 @@ public class LockFragment extends Fragment {
     LocationListener locationListener;
 
     private JSONParser p = new JSONParser();
-    ArrayList<Key> keys = null;
+    ArrayList<Coordinates> keys = null;
     ArrayAdapter<String> listViewAdapter = null;
     View view;
 
@@ -50,9 +49,9 @@ public class LockFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_lock, container, false);
 
         //dok se ne poveze na server
-        keys = new ArrayList<Key>();        //keys = p.parseKljuc
+        keys = new ArrayList<Coordinates>();        //keys = p.parseLock
         for (int i= 0; i<5; i++){
-            Key k = new Key();
+            Coordinates k = new Coordinates();
             k.setTitle("kljuc");
             k.setLatitude(45.802411);
             k.setLongitude(16.064697);
@@ -95,7 +94,7 @@ public class LockFragment extends Fragment {
 
     private void Ispis() {
         ArrayList<String> pom = new ArrayList<String>();
-        for(Key k: keys ) {
+        for(Coordinates k: keys ) {
             double distance = Udaljenost(k.getLatitude(), k.getLongitude());
             pom.add(k.getTitle() + ", udaljenost: " + Math.round(distance) + "m");
 
