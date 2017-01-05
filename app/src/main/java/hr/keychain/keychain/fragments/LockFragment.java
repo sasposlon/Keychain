@@ -21,6 +21,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import hr.keychain.keychain.IzbornikActivity;
+import hr.keychain.keychain.JSONParser;
+import hr.keychain.keychain.Key;
 import hr.keychain.keychain.R;
 
 /**
@@ -29,9 +31,14 @@ import hr.keychain.keychain.R;
 
 public class LockFragment extends Fragment {
 
+    private double myLatitude;
+    private double myLongitude;
+
     LocationManager locationManager;
     LocationListener locationListener;
-    ArrayList<String> keys = new ArrayList<String>();
+
+    private JSONParser p = new JSONParser();
+    ArrayList<Key> keys = null;
     ArrayAdapter<String> listViewAdapter = null;
     View view;
 
@@ -42,24 +49,28 @@ public class LockFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_lock, container, false);
 
+        //dok se ne poveze na server
+        keys = new ArrayList<Key>();        //keys = p.parseKljuc
+        for (int i= 0; i<5; i++){
+            Key k = new Key();
+            k.setTitle("kljuc");
+            k.setLatitude(45.802411);
+            k.setLongitude(16.064697);
+            keys.add(k);
+        }
         //postavljanje naslova na ActionBar
         ((IzbornikActivity) getActivity()).setActionBarTitle("LOCK / UNLOCK");
-
 
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 if(location != null){
-                    double myLatitude = location.getLatitude();
-                    double myLongitude = location.getLongitude();
+                    myLatitude = location.getLatitude();
+                    myLongitude = location.getLongitude();
                     Log.e("Latitude: ", "" + myLatitude);
                     Log.e("Longitude: ", "" + myLongitude);
-                    Ispis(myLatitude, myLongitude);
 
-                  //  TextView tv = (TextView) view.findViewById(R.id.lock);
-                  //  tv.setText("duzina: " + myLatitude + "\nsirina: " + myLongitude);
-                  //  TextView tv1 = (TextView) view.findViewById(R.id.distance);
-                  //  tv1.setText("Udaljenost: " + Math.round(distance) + " m");
+                    Ispis();
                 }
             }
 
@@ -79,36 +90,33 @@ public class LockFragment extends Fragment {
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, locationListener);
 
-
-
-
-
         return view;
     }
 
-    private void Ispis(double myLatitude, double myLongitude) {
+    private void Ispis() {
+        ArrayList<String> pom = new ArrayList<String>();
+        for(Key k: keys ) {
+            double distance = Udaljenost(k.getLatitude(), k.getLongitude());
+            pom.add(k.getTitle() + ", udaljenost: " + Math.round(distance) + "m");
 
-        double distance = Udaljenost(myLatitude, myLongitude); //udaljenost
-        for(int i=0; i<5; i++ ) {
-            String k = ("kljuc, udaljenost:  " + Math.round(distance) + "m");
-            if(distance < 10){keys.add(k);}
         }
         ListView listview = (ListView) view.findViewById(R.id.listaKljuceva);   //gdje prikazujemo sadrzaj(listView u layoutu)
         listViewAdapter = new ArrayAdapter<String>(                             //adapter(aktivnost, layout za svaki red(template od androida), podaci)
-                getActivity(), android.R.layout.simple_list_item_1, keys);
+                getActivity(), android.R.layout.simple_list_item_1, pom);
         listview.setAdapter(listViewAdapter);
     }
 
     private double Udaljenost(double latitude, double longitude) {
         Location prvi = new Location("pocetni");
-        prvi.setLatitude(latitude);
-        prvi.setLongitude(longitude);
+        prvi.setLatitude(myLatitude);
+        prvi.setLongitude(myLongitude);
 
         Location drugi = new Location("usporedba");
-        drugi.setLatitude(45.802411);
-        drugi.setLongitude(16.064697);
+        drugi.setLatitude(latitude);
+        drugi.setLongitude(longitude);
 
         double distance = prvi.distanceTo(drugi);
         return  distance;
     }
+
 }
