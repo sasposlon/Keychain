@@ -3,4 +3,12 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="edit">Context menu: edit</string>
+    <string name="delete">Context menu: delete</string>
+
+    <string name="menu_lock">Lock/Unlock</string>
+    <string name="menu_add">Add Key</string>
+    <string name="menu_all">All keys</string>
+
 </resources>
