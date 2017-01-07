@@ -18,7 +18,7 @@ import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.R;
 import hr.keychain.keychain.helper.Session;
 import hr.keychain.webservice.WebService;
-import hr.keychain.webservice.responses.RegistrationResponse;
+import hr.keychain.webservice.responses.GenericResponse;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -34,7 +34,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private final String service = "login";
     private View view;
     private Button btnLogin;
-    private TextView btnCreateAcc;
+    private TextView btnCreateAcc, btnForgotPassword;
     private EditText editMail, editPassword;
     private Session session;
 
@@ -50,6 +50,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         btnLogin.setOnClickListener(this);
         btnCreateAcc = (TextView) view.findViewById(R.id.btnCreateAcc);
         btnCreateAcc.setOnClickListener(this);
+        btnForgotPassword = (TextView) view.findViewById(R.id.btnForgotPass);
+        btnForgotPassword.setOnClickListener(this);
         session = new Session(getContext());
         return view;
     }
@@ -70,6 +72,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             case R.id.btnCreateAcc:
                 createAccount();
                 break;
+
+            case R.id.btnForgotPass:
+                forgotPassword();
+                break;
         }
     }
 
@@ -83,11 +89,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 .build();
 
         WebService serviceCaller = retrofit.create(WebService.class);
-        Call<RegistrationResponse> call = serviceCaller.login(service, mail, password);
+        Call<GenericResponse> call = serviceCaller.login(service, mail, password);
         if(call != null){
-            call.enqueue(new Callback<RegistrationResponse>() {
+            call.enqueue(new Callback<GenericResponse>() {
                 @Override
-                public void onResponse(Response<RegistrationResponse> returnedResponse, Retrofit retrofit) {
+                public void onResponse(Response<GenericResponse> returnedResponse, Retrofit retrofit) {
                     try{
                         if(returnedResponse.isSuccess()){
                             if (returnedResponse.body().getCode() == 10) {
@@ -121,6 +127,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         RegisterFragment registerFragment = new RegisterFragment();
         fragmentTransaction.replace(R.id.login_registration_container, registerFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void forgotPassword() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ForgotPasswordFragment forgotPass = new ForgotPasswordFragment();
+        fragmentTransaction.replace(R.id.login_registration_container, forgotPass);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

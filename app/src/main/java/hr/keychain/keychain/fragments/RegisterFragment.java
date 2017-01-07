@@ -19,8 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import hr.keychain.database.entities.User;
 import hr.keychain.keychain.R;
 import hr.keychain.webservice.WebService;
-import hr.keychain.webservice.responses.RegistrationResponse;
-import hr.keychain.webservice.responses.WebServiceResponse;
+import hr.keychain.webservice.responses.GenericResponse;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -76,11 +75,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
                 .build();
 
         WebService serviceCaller = retrofit.create(WebService.class);
-        Call<RegistrationResponse> call = serviceCaller.registration(service, email, password);
+        Call<GenericResponse> call = serviceCaller.registration(service, email, password);
         if(call != null){
-            call.enqueue(new Callback<RegistrationResponse>() {
+            call.enqueue(new Callback<GenericResponse>() {
                 @Override
-                public void onResponse(Response<RegistrationResponse> returnedResponse, Retrofit retrofit) {
+                public void onResponse(Response<GenericResponse> returnedResponse, Retrofit retrofit) {
                     try{
                         if(returnedResponse.isSuccess()){
                             if (returnedResponse.body().getCode() == 10) {

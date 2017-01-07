@@ -14,7 +14,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import hr.keychain.keychain.R;
 import hr.keychain.webservice.WebService;
-import hr.keychain.webservice.responses.RegistrationResponse;
+import hr.keychain.webservice.responses.GenericResponse;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -71,11 +71,11 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
                 .build();
 
         WebService serviceCaller = retrofit.create(WebService.class);
-        Call<RegistrationResponse> call = serviceCaller.forgotPassword(service, mail);
+        Call<GenericResponse> call = serviceCaller.forgotPassword(service, mail);
         if(call != null){
-            call.enqueue(new Callback<RegistrationResponse>() {
+            call.enqueue(new Callback<GenericResponse>() {
                 @Override
-                public void onResponse(Response<RegistrationResponse> returnedResponse, Retrofit retrofit) {
+                public void onResponse(Response<GenericResponse> returnedResponse, Retrofit retrofit) {
                     try{
                         if(returnedResponse.isSuccess()){
                             if (returnedResponse.body().getCode() == 10) {
