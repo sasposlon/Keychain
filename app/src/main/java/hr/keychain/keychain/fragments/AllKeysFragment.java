@@ -7,17 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.R;
+import hr.keychain.keychain.helper.Session;
 
 
 public class AllKeysFragment extends Fragment {
 
     private final String baseUrl = "http://arka.foi.hr/WebDiP/2014_projekti/WebDiP2014x054/WS/";
     private final String servise = "allLocks";
+    private Session session;
 
     public AllKeysFragment(){}
 
@@ -28,6 +31,9 @@ public class AllKeysFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_keys, container, false);
+        session = new Session(getContext());
+        Toast toast = Toast.makeText(getContext(), session.getUsername(), Toast.LENGTH_SHORT);
+        toast.show();
 
         for(int i=0; i<5; i++ ) {   //dok ne povezem sa servisima
             String k = ("kljuc");

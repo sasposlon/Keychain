@@ -13,17 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.raizlabs.android.dbflow.config.FlowConfig;
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.squareup.okhttp.OkHttpClient;
-
-import java.util.List;
-
-import hr.keychain.database.entities.User;
 import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.R;
+import hr.keychain.keychain.helper.Session;
 import hr.keychain.webservice.WebService;
 import hr.keychain.webservice.responses.RegistrationResponse;
 import retrofit.Call;
@@ -43,6 +36,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private Button btnLogin;
     private TextView btnCreateAcc;
     private EditText editMail, editPassword;
+    private Session session;
 
     public LoginFragment () {}
 
@@ -56,6 +50,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         btnLogin.setOnClickListener(this);
         btnCreateAcc = (TextView) view.findViewById(R.id.btnCreateAcc);
         btnCreateAcc.setOnClickListener(this);
+        session = new Session(getContext());
         return view;
     }
 
@@ -78,7 +73,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void login(String mail, String password){
+    private void login(final String mail, String password){
         OkHttpClient client = new OkHttpClient();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -98,6 +93,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                             if (returnedResponse.body().getCode() == 10) {
                                 Toast toast = Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT);
                                 toast.show();
+                                session.setUsername(mail);
                                 Intent myIntent = new Intent(getActivity(), IzbornikActivity.class);
                                 startActivity(myIntent);
                             } else {
