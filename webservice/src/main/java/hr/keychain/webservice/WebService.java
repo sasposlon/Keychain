@@ -26,5 +26,11 @@ public interface WebService {
     @FormUrlEncoded
     @Headers("Accept: application/json")
     @POST("RESTController.php")
+    Call<GenericResponse> addKey(@Field("service") String service, @Field("mail") String mail ,@Field("name") String name, @Field("description") String description, @Field("address") String address, @Field("longitude") double longitude, @Field("latitude") double latitude, @Field("code") String code);
+
+
+    @FormUrlEncoded
+    @Headers("Accept: application/json")
+    @POST("RESTController.php")
     Call<GenericResponse> forgotPassword(@Field("service") String service, @Field("mail") String mail);
 }
