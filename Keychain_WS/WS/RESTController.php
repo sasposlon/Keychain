@@ -2,7 +2,8 @@
 
 require_once("Handlers/RegistrationRESTHandler.php");
 require_once("Handlers/LoginRESTHandler.php");
-require_once("Handlers/AllKeysHandler.php");
+require_once("Handlers/AllKeysRESTHandler.php");
+require_once("Handlers/ForgotPasswordRESTHandler.php");
 
 $view = "";
 if (filter_has_var(INPUT_POST, 'service')) {
@@ -25,10 +26,15 @@ if (filter_has_var(INPUT_POST, 'service')) {
             break;
 
         case "allLocks":
-            $lock = new AllKeysHandler();
+            $lock = new AllKeysRESTHandler();
             $lock->work();
             break;
-
+        
+        case "forgotPassword":
+            $forgotPass = new ForgotPasswordRESTHandler();
+            $forgotPass->work();
+            break;
+            
         case "" :
             //404 - not found;
             break;

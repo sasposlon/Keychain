@@ -87,7 +87,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
                                 toast.show();
                                 LoginFragment loginFragment = new LoginFragment();
                                 FragmentManager fragmentManager = getFragmentManager();
-                                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.replace(R.id.login_registration_container, loginFragment);
 
                                 FlowManager.init(new FlowConfig.Builder(getContext()).build()); //Initialize DB

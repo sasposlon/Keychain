@@ -3,6 +3,8 @@ package hr.keychain.keychain.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +47,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnSubmit:
                 if (!editMail.getText().toString().isEmpty()) {
@@ -79,8 +81,14 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
                     try{
                         if(returnedResponse.isSuccess()){
                             if (returnedResponse.body().getCode() == 10) {
-                                Toast toast = Toast.makeText(getContext(), "Registration successful", Toast.LENGTH_SHORT);
+                                Toast toast = Toast.makeText(getContext(), "Password sent.", Toast.LENGTH_SHORT);
                                 toast.show();
+                                LoginFragment loginFragment = new LoginFragment();
+                                FragmentManager fragmentManager = getFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.login_registration_container, loginFragment);
+                                fragmentManager.popBackStack();
+                                fragmentTransaction.commit();
                             } else {
                                 Toast toast = Toast.makeText(getContext(), returnedResponse.body().getMessage(), Toast.LENGTH_SHORT);
                                 toast.show();
