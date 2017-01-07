@@ -4,6 +4,7 @@ require_once("Handlers/RegistrationRESTHandler.php");
 require_once("Handlers/LoginRESTHandler.php");
 require_once("Handlers/AllKeysRESTHandler.php");
 require_once("Handlers/ForgotPasswordRESTHandler.php");
+require_once("Handlers/AddKeyRESTHandler.php");
 
 $view = "";
 if (filter_has_var(INPUT_POST, 'service')) {
@@ -33,6 +34,11 @@ if (filter_has_var(INPUT_POST, 'service')) {
         case "forgotPassword":
             $forgotPass = new ForgotPasswordRESTHandler();
             $forgotPass->work();
+            break;
+        
+        case "addKey":
+            $addKey = new AddKeyRESTHandler();
+            $addKey->work();
             break;
             
         case "" :
