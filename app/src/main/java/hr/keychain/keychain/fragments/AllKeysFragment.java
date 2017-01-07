@@ -1,38 +1,28 @@
 package hr.keychain.keychain.fragments;
 
-import android.app.Activity;
-import android.app.ListFragment;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import hr.keychain.keychain.IzbornikActivity;
-import hr.keychain.keychain.JSONParser;
 import hr.keychain.keychain.R;
+import hr.keychain.keychain.helper.Session;
 
 
 public class AllKeysFragment extends Fragment {
 
     private final String baseUrl = "http://arka.foi.hr/WebDiP/2014_projekti/WebDiP2014x054/WS/";
     private final String servise = "allLocks";
+    private Session session;
 
     public AllKeysFragment(){}
-
-    private JSONParser p = new JSONParser();
 
     ArrayList<String> keys = new ArrayList<String>();
 
@@ -41,6 +31,9 @@ public class AllKeysFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_keys, container, false);
+        session = new Session(getContext());
+        Toast toast = Toast.makeText(getContext(), session.getUsername(), Toast.LENGTH_SHORT);
+        toast.show();
 
         for(int i=0; i<5; i++ ) {   //dok ne povezem sa servisima
             String k = ("kljuc");

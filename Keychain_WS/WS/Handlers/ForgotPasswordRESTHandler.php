@@ -3,7 +3,7 @@
 require_once("./RESTClass.php");
 require_once('./../Database/Db_class.php');
 
-class RegistrationRESTHandler extends RESTClass {
+class ForgotPasswordRESTHandler extends RESTClass {
     private $result = array('mail' => '',
         'password' => '',
         'pin' => '');
@@ -11,9 +11,8 @@ class RegistrationRESTHandler extends RESTClass {
     function work() {
         $db = new Db();
         $statusCode = 200;
-        if (filter_has_var(INPUT_POST, 'mail') && filter_has_var(INPUT_POST, 'password')) {
+        if (filter_has_var(INPUT_POST, 'mail')) {
             $mail = filter_input(INPUT_POST, 'mail');
-            $password = filter_input(INPUT_POST, 'password');
 
             if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
                 $rawData = $this->getResponseMessage(21, $this->result);
@@ -23,17 +22,14 @@ class RegistrationRESTHandler extends RESTClass {
                 $row = $db->single();
 
                 if (empty($row)) {
-                    $db->query("Insert into user (mail, password) values (:mail, :password)");
-                    $db->bind(':mail', $mail);
-                    $db->bind(':password', $password);
-                    $db->execute();
+                    $rawData = $this->getResponseMessage(24, $this->result);
                     
-                    $db->query("Select * from user where mail = :mail");
-                    $db->bind(':mail', $mail);
-                    $data = $db->single();
-                    $rawData = $this->getResponseMessage(10, $data);
                 } else {
-                    $rawData = $this->getResponseMessage(25, $this->result);
+                    $adress = $row['mail'];
+                    $subject = "Password";
+                    $message = "Your password is: ". $row['password'];
+                    mail($adress, $subject, $message);
+                    $rawData = $this->getResponseMessage(10, $this->result);
                 }
             }
         } else {

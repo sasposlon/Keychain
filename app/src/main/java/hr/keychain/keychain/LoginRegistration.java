@@ -13,6 +13,7 @@ public class LoginRegistration extends AppCompatActivity {
         setContentView(R.layout.activity_login_registration);
 
         LoginFragment loginFragment = new LoginFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.login_registration_container, loginFragment).commit();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.login_registration_container, loginFragment).commit();
     }
 }

@@ -1,17 +1,15 @@
 package hr.keychain.webservice.responses;
 
-import org.json.JSONArray;
 
 /**
  * Created by Saša Poslončec on 15.11.16..
  */
 
-public class WebServiceResponse {
+public abstract class WebServiceResponse {
 
     public int code;
     public String type;
     public String message;
-    public JSONArray items;
 
     public int getCode() {
         return code;
@@ -35,13 +33,5 @@ public class WebServiceResponse {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public JSONArray getItems() {
-        return items;
-    }
-
-    public void setItems(JSONArray items) {
-        this.items = items;
     }
 }
