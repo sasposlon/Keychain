@@ -95,6 +95,10 @@ class RESTClass {
             25 => array('code' => 25,
                 'type' => 'Error',
                 'message' => 'E-mail already exists!',
+                'items' => $result),
+            26 => array('code' => 26,
+                'type' => 'Error',
+                'message' => 'Key with that name already exists!',
                 'items' => $result)
         );
         return $data[$code];

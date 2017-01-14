@@ -1,6 +1,9 @@
 package hr.keychain.keychain.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +16,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.okhttp.OkHttpClient;
+
+import hr.keychain.database.entities.User;
+import hr.keychain.database.entities.User_Table;
 import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.R;
+import hr.keychain.keychain.helper.Internet;
 import hr.keychain.keychain.helper.Session;
 import hr.keychain.webservice.WebService;
 import hr.keychain.webservice.responses.GenericResponse;
@@ -37,6 +49,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private TextView btnCreateAcc, btnForgotPassword;
     private EditText editMail, editPassword;
     private Session session;
+    private Internet internet = new Internet();
 
     public LoginFragment () {}
 
@@ -53,6 +66,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         btnForgotPassword = (TextView) view.findViewById(R.id.btnForgotPass);
         btnForgotPassword.setOnClickListener(this);
         session = new Session(getContext());
+        if(!internet.internetConnectivity(getContext())) {
+            Toast toast = Toast.makeText(getContext(), "Offline mode", Toast.LENGTH_SHORT);
+            toast.show();
+        }
         return view;
     }
 
@@ -61,11 +78,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         switch (view.getId()) {
             case R.id.btnLogin:
                 if (!editMail.getText().toString().isEmpty() && !editPassword.getText().toString().isEmpty()) {
-                    login(editMail.getText().toString(), editPassword.getText().toString());
+                    if(internet.internetConnectivity(getContext())) {
+                        login(editMail.getText().toString(), editPassword.getText().toString());
+                    }
+                    else {
+                        loginLocal(editMail.getText().toString(), editPassword.getText().toString());
+                    }
                 }
                 else {
-                    Toast toast = Toast.makeText(getContext(), "Fields are empty", Toast.LENGTH_SHORT);
-                    toast.show();
+                    displayToast("Fields are empty");
                 }
                 break;
 
@@ -97,14 +118,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     try{
                         if(returnedResponse.isSuccess()){
                             if (returnedResponse.body().getCode() == 10) {
-                                Toast toast = Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT);
-                                toast.show();
+                                displayToast("Login successful");
                                 session.setUsername(mail);
                                 Intent myIntent = new Intent(getActivity(), IzbornikActivity.class);
                                 startActivity(myIntent);
                             } else {
-                                Toast toast = Toast.makeText(getContext(), returnedResponse.body().getMessage(), Toast.LENGTH_SHORT);
-                                toast.show();
+                                displayToast(returnedResponse.body().getMessage());
                             }
                         }
                     } catch (Exception ex){
@@ -123,36 +142,51 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
 
     private void createAccount () {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        RegisterFragment registerFragment = new RegisterFragment();
-        fragmentTransaction.replace(R.id.login_registration_container, registerFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        if(internet.internetConnectivity(getContext())) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            RegisterFragment registerFragment = new RegisterFragment();
+            fragmentTransaction.replace(R.id.login_registration_container, registerFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+        else {
+            displayToast("Please go online to use this feature");
+        }
     }
 
     private void forgotPassword() {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ForgotPasswordFragment forgotPass = new ForgotPasswordFragment();
-        fragmentTransaction.replace(R.id.login_registration_container, forgotPass);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        if(internet.internetConnectivity(getContext())) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            ForgotPasswordFragment forgotPass = new ForgotPasswordFragment();
+            fragmentTransaction.replace(R.id.login_registration_container, forgotPass);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+        else {
+            displayToast("Please go online to use this feature");
+        }
     }
 
-    /*
-    private void readDb (String mail, String password) {
-        User users = SQLite.select().from(User.class).querySingle();
-        if (users != null) {
+    private void loginLocal (String mail, String password) {
+        FlowManager.init(new FlowConfig.Builder(getContext()).build());
+
+        if (new Select().from(User.class).where(Condition.column(User_Table.mail.getNameAlias())
+                .eq(mail)).and(Condition.column(User_Table.password.getNameAlias()).eq(password))
+                .querySingle() != null) {
             //otvaranje nove aktivnosti
             Intent myIntent = new Intent(getActivity(), IzbornikActivity.class);
             startActivity(myIntent);
-            Toast toast = Toast.makeText(getContext(), "Login succsessful", Toast.LENGTH_SHORT);
-            toast.show();
+            displayToast("Login succsessful");
         }
         else {
-            Toast toast = Toast.makeText(getContext(), "Wrong e-mail or password", Toast.LENGTH_SHORT);
-            toast.show();
+            displayToast("Wrong e-mail or password");
         }
-    }*/
+    }
+
+    private void displayToast(String message) {
+        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 }

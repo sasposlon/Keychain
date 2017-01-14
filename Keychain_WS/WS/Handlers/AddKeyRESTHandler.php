@@ -4,6 +4,7 @@ require_once("./RESTClass.php");
 require_once('./../Database/Db_class.php');
 
 class AddKeyRESTHandler extends RESTClass {
+
     private $result = array('mail' => '',
         'password' => '',
         'pin' => '');
@@ -19,17 +20,28 @@ class AddKeyRESTHandler extends RESTClass {
             $longitude = filter_input(INPUT_POST, 'longitude');
             $latitude = filter_input(INPUT_POST, 'latitude');
             $code = filter_input(INPUT_POST, 'code');
-            
-            $db->query("INSERT into NFCkeys (name, description, address, longitude, latitude, code) values (:name, :description, :address, :longitude, :latitude, :code)");
+
+            $db->query("select * from NFCkeys where name = :name and mail = :mail");
             $db->bind(':name', $name);
-            $db->bind(':description', $description);
-            $db->bind(':address', $address);
-            $db->bind(':longitude', $longitude);
-            $db->bind(':latitude', $latitude);
-            $db->bind(':code', $code);
-            $db->execute();
-            
-            $rawData = $this->getResponseMessage(10, $this->result);
+            $db->bind(':mail', $mail);
+            $row = $db->single();
+            if (empty($row)) {
+
+                $db->query("INSERT into NFCkeys (name, description, address, longitude, latitude, code, mail) values (:name, :description, :address, :longitude, :latitude, :code, :mail)");
+                $db->bind(':name', $name);
+                $db->bind(':description', $description);
+                $db->bind(':address', $address);
+                $db->bind(':longitude', $longitude);
+                $db->bind(':latitude', $latitude);
+                $db->bind(':code', $code);
+                $db->bind(':mail', $mail);
+                $db->execute();
+
+                $rawData = $this->getResponseMessage(10, $this->result);
+            }
+            else {
+                $rawData = $this->getHttpStatusMessage(26, $this->result);
+            }
         } else {
             $rawData = $this->getResponseMessage(23);
         }

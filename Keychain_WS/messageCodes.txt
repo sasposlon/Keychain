@@ -9,3 +9,4 @@ Error
 23 -> Variables missing
 24 -> E-mail does not exist
 25 -> E-mail already exists
+26 -> Key with that name already exists
