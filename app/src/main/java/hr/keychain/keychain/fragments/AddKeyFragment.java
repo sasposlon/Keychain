@@ -19,13 +19,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.IOException;
 import java.util.List;
 
+import hr.keychain.database.entities.Key;
 import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.R;
+import hr.keychain.keychain.helper.Internet;
 import hr.keychain.keychain.helper.Session;
 import hr.keychain.webservice.WebService;
 import hr.keychain.webservice.responses.GenericResponse;
@@ -86,8 +90,7 @@ public class AddKeyFragment extends Fragment implements View.OnClickListener {
 
         }
         else {
-            Toast toast = Toast.makeText(getContext(), "Fields are empty", Toast.LENGTH_SHORT);
-            toast.show();
+            displayToast("Fields are empty");
         }
     }
 
@@ -104,7 +107,7 @@ public class AddKeyFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void addKey(String name, String description, String address, double longitude, double latitude, String code) {
+    private void addKey(final String name, final String description, final String address, final double longitude, final double latitude, final String code) {
         OkHttpClient client = new OkHttpClient();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -113,7 +116,7 @@ public class AddKeyFragment extends Fragment implements View.OnClickListener {
                 .client(client)
                 .build();
         Session session = new Session(getContext());
-        String mail = session.getUsername();
+        final String mail = session.getUsername();
         WebService serviceCaller = retrofit.create(WebService.class);
         Call<GenericResponse> call = serviceCaller.addKey(service, mail, name, description, address, longitude, latitude, code);
         if(call != null){
@@ -123,21 +126,17 @@ public class AddKeyFragment extends Fragment implements View.OnClickListener {
                     try{
                         if(returnedResponse.isSuccess()){
                             if (returnedResponse.body().getCode() == 10) {
-                                Toast toast = Toast.makeText(getContext(), "Key successfully added", Toast.LENGTH_SHORT);
-                                toast.show();
+                                writeLocalDB(name, description, address, longitude, latitude, code, mail);
+                                displayToast("Key successfully added");
                                 AddKeyFragment addKeyFragment = new AddKeyFragment();
                                 FragmentManager fragmentManager = getFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.detach(addKeyFragment);
                                 fragmentTransaction.attach(addKeyFragment);
 
-                                //FlowManager.init(new FlowConfig.Builder(getContext()).build()); //Initialize DB
-                                //writeDb(returnedResponse.body().getItems().getMail(), returnedResponse.body().getItems().getPassword()); //Write data to local DB
-
                                 fragmentTransaction.commit();
                             } else {
-                                Toast toast = Toast.makeText(getContext(), returnedResponse.body().getMessage(), Toast.LENGTH_SHORT);
-                                toast.show();
+                                displayToast(returnedResponse.body().getMessage());
                             }
                         }
                     } catch (Exception ex){
@@ -153,6 +152,7 @@ public class AddKeyFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    //fetches latitude and longitude of a given address
     private void getGeolocation(String name, String description, String address, String code) {
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(getContext());
@@ -160,18 +160,38 @@ public class AddKeyFragment extends Fragment implements View.OnClickListener {
             addresses = geocoder.getFromLocationName(address, 1);
 
             if (addresses == null || addresses.size()  == 0) {
-                Toast toast = Toast.makeText(getContext(), "Can't fetch address coordinates", Toast.LENGTH_SHORT);
-                toast.show();
+                displayToast("Can't fetch address coordinates");
                 return;
             }
             else {
                 double longitude = addresses.get(0).getLongitude();
                 double latitude = addresses.get(0).getLatitude();
+                Session session = new Session(getContext());
                 addKey(name, description, address, longitude, latitude, code);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void writeLocalDB(String name, String description, String address, double longitude, double latitude, String code, String mail) {
+        FlowManager.init(new FlowConfig.Builder(getContext()).build());
+
+        Key key = new Key();
+        key.setName(name);
+        key.setDescription(description);
+        key.setAddress(address);
+        key.setLongitude(longitude);
+        key.setLatitude(latitude);
+        key.setCode(code);
+        key.setMail(mail);
+        key.save();
+    }
+
+    //displays the toast on screen
+    private void displayToast(String message) {
+        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

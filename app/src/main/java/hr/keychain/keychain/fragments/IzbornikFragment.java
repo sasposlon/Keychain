@@ -15,8 +15,10 @@ import android.widget.Toast;
 import hr.keychain.keychain.IzbornikActivity;
 import hr.keychain.keychain.R;
 import hr.keychain.keychain.fragments.AllKeysFragment;
+import hr.keychain.keychain.helper.Internet;
 
 public class IzbornikFragment extends Fragment {
+    public Internet internet = new Internet();
 
 
     public IzbornikFragment() {
@@ -45,10 +47,16 @@ public class IzbornikFragment extends Fragment {
                 Fragment fragment = null;
                 switch (position) {
                     case 0:
-                        fragment = new AddKeyFragment();
+                        if(internet.internetConnectivity(getContext())) {
+                            displayToast("banana");
+                            fragment = new AddKeyFragment();
+                        }
+                        else {
+                            displayToast("Please go online to use this feature");
+                        }
                         break;
                     case 1:
-                        Toast.makeText(getActivity(), "Nije realizirana ova funkcionalnost", Toast.LENGTH_SHORT).show();
+                        displayToast("Nije realizirana ova funkcionalnost");
                         break;
                     case 2:
                         fragment = new AllKeysFragment();
@@ -66,6 +74,11 @@ public class IzbornikFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void displayToast(String message) {
+        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 }

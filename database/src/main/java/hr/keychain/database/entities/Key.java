@@ -17,24 +17,28 @@ public class Key extends BaseModel {
     @PrimaryKey
     @Column String id_key;
 
-    @Column String key_hash;
+    @Column String description;
+    @Column String code;
+    @Column String name;
+    @Column String address;
+    @Column double longitude;
+    @Column double latitude;
 
     @Column
-    @ForeignKey(tableClass = Geolocation.class)
-    String geolocation;
-
-    @Column
-    @ForeignKey(tableClass = Wifi.class)
-    String wifi;
+    @ForeignKey(tableClass = User.class)
+    String mail;
 
     public Key() {
     }
 
-    public Key(String id_key, String key_hash, String geolocation, String wifi) {
+    public Key(String id_key, String description, String code, String name, String address, double longitude, double latitude, String mail) {
         this.id_key = id_key;
-        this.key_hash = key_hash;
-        this.geolocation = geolocation;
-        this.wifi = wifi;
+        this.code = code;
+        this.name = name;
+        this.address = address;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.mail = mail;
     }
 
     public String getId_key() {
@@ -45,27 +49,59 @@ public class Key extends BaseModel {
         this.id_key = id_key;
     }
 
-    public String getKey_hash() {
-        return key_hash;
+    public String getDescription() {
+        return description;
     }
 
-    public void setKey_hash(String key_hash) {
-        this.key_hash = key_hash;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getGeolocation() {
-        return geolocation;
+    public String getCode() {
+        return code;
     }
 
-    public void setGeolocation(String geolocation) {
-        this.geolocation = geolocation;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getWifi() {
-        return wifi;
+    public String getName() {
+        return name;
     }
 
-    public void setWifi(String wifi) {
-        this.wifi = wifi;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }
